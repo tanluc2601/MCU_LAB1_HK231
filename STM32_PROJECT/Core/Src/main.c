@@ -64,6 +64,8 @@ static void MX_GPIO_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+	int led_status = 1;
+	int count = 200;
 
   /* USER CODE END 1 */
 
@@ -94,6 +96,26 @@ int main(void)
   while (1)
   {
 	  // This is exercise 1
+
+	  if (led_status == 1) {
+	  		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, RESET);
+	  		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
+	  		 count = count -1;
+	  		 if (count <= 0) {
+	  			count = 200;
+	  			led_status = 2;
+	  		}
+	  	}
+	  	  else {
+	  		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET);
+	  		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, RESET);
+	  		  count = count -1;
+	  		  if (count <= 0) {
+	  		  	 count = 200;
+	  		  	 led_status = 1;
+	  		  		}
+	  	}
+	  	  HAL_Delay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
