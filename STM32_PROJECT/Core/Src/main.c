@@ -64,6 +64,8 @@ static void MX_GPIO_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+	setTimer1(100);
+	int led_status = 1;
 
   /* USER CODE END 1 */
 
@@ -93,7 +95,34 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  // This is main exercise
+	  // This is exercise 2
+
+	  if (timer1_flag == 1){
+	  	  if (led_status == 1) {
+	  	  		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, RESET);
+	  	  		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
+	  	  		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, SET);
+	  	  		 setTimer1(500);
+	  	  		 led_status = 2;
+	  	  	}
+	  	  else if (led_status == 2) {
+	  	  		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET);
+	  	  		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, RESET);
+	  	  		  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, SET);
+	  	  		  setTimer1(200);
+	  	  		  led_status =  3;
+	  	  	}
+	  	  else {
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, RESET);
+	  			setTimer1(300);
+	  			led_status = 1;
+	  		}
+	  	  }
+	  	  	  timerRun();
+	  	  	  HAL_Delay(10);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
