@@ -64,6 +64,18 @@ static void MX_GPIO_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+	void display7SEG(int num){
+	    	//tao mang de luu cac gia tri cua cac so tu 0 den 9
+	    	char led7seg[10] = {0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
+	    	//cho bien i chay tu 0 den 6 tuong duong voi 7 doan tren led7doan
+	    	//muc dich cua vong lap nay la de bat hoac tat cac led tren led 7 doan
+	    	for (int i=0; i < 7; i++){
+	    		/*dich bit sang phai de tien hanh and voi bit 1 de xac dinh trang thai led
+	    		 0 la bat 1 la tat
+	    		 */
+	    		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0 <<i, (led7seg[num]>>i) & 1);
+	    	}
+	    }
 
   /* USER CODE END 1 */
 
@@ -91,9 +103,90 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+enum TrafficLightState {
+	RED1_GREEN2,
+	RED1_YELLOW2,
+	GREEN1_RED2,
+	YELLOW1_RED2,
+  };
+// Initialize the current state of the traffic light
+int counter = 3;
+int light = 5;
+enum TrafficLightState currentState = RED1_GREEN2;
+enum TrafficLightState nextState = currentState;
   while (1)
   {
-	  // This is main exercise
+	  // This is exercise 5
+
+	  display7SEG(light);
+	  	  switch (currentState){
+	  	  	  case RED1_GREEN2:
+	  	  		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, RESET);
+	  	  		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, RESET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, SET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, SET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, SET);
+	  			counter--;
+	  			light--;
+	  			if(counter <= 0)
+	  			{
+	  				nextState = RED1_YELLOW2;
+	  				counter = 2;
+	  			}
+	  			break;
+	  	  	  case RED1_YELLOW2:
+	  	  		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, RESET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, RESET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, SET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, SET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, SET);
+	  			counter--;
+	  			light--;
+	  			if(counter <= 0)
+	  			{
+	  				nextState = GREEN1_RED2;
+	  				counter = 3;
+	  				light = 3;
+	  			}
+	  			break;
+	  	  	  case GREEN1_RED2:
+	  	  		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, RESET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, RESET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, SET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, SET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, SET);
+	  			counter--;
+	  			light--;
+	  			if(counter <= 0)
+	  			{
+	  				nextState = YELLOW1_RED2;
+	  				counter = 2;
+	  				light = 2;
+	  			}
+	  			break;
+	  	  	  case YELLOW1_RED2:
+	  	  		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, RESET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, RESET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, SET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, SET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, SET);
+	  			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_7, SET);
+	  			counter--;
+	  			light--;
+	  			if(counter <= 0)
+	  			{
+	  				nextState = RED1_GREEN2;
+	  				counter = 3;
+	  				light = 5;
+	  			}
+	  			break;
+	  	  }
+	  	  	  currentState = nextState;
+	  	  	  HAL_Delay(1000);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
