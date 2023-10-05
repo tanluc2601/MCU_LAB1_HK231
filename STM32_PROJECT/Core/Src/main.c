@@ -86,14 +86,34 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
+  void display7SEG(int num){
+    	//tao mang de luu cac gia tri cua cac so tu 0 den 9
+    	char led7seg[10] = {0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8, 0x80, 0x90};
+    	//cho bien i chay tu 0 den 6 tuong duong voi 7 doan tren led7doan
+    	//muc dich cua vong lap nay la de bat hoac tat cac led tren led 7 doan
+    	for (int i=0; i < 7; i++){
+    		/*dich bit sang phai de tien hanh and voi bit 1 de xac dinh trang thai led
+    		 0 la bat 1 la tat
+    		 */
+    		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0 <<i, (led7seg[num]>>i) & 1);
+
+    	}
+    }
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  int counter=0;
   while (1)
   {
-	  // This is main exercise
+	  // This is exercise 4
+
+	  if(counter>=10) counter=0;
+		  display7SEG(counter);
+		  counter++;
+		  HAL_Delay(1000);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
