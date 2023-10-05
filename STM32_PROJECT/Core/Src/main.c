@@ -86,6 +86,37 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
+  uint16_t ledPin[12] = {GPIO_PIN_4, GPIO_PIN_5, GPIO_PIN_6, GPIO_PIN_7,
+						 GPIO_PIN_8, GPIO_PIN_9, GPIO_PIN_10, GPIO_PIN_11,
+						 GPIO_PIN_12, GPIO_PIN_13, GPIO_PIN_14, GPIO_PIN_15};
+    void checkLed(int num){
+    			HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 |
+    							  GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9 |
+    							  GPIO_PIN_10 | GPIO_PIN_11 | GPIO_PIN_12 |
+    							  GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15,
+    							  GPIO_PIN_SET);
+    			HAL_GPIO_WritePin(GPIOA, ledPin[num], GPIO_PIN_RESET);
+    }
+
+    void clearAllClock() {
+    	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6 |
+    							 GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9 |
+    							 GPIO_PIN_10 | GPIO_PIN_11 | GPIO_PIN_12 |
+								 GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15,
+    							 GPIO_PIN_SET);
+    }
+    void setNumberOnClock(int num) {
+    	HAL_GPIO_WritePin(GPIOA, ledPin[num], GPIO_PIN_RESET);
+    }
+    void clearNumberOnClock(int num) {
+    	HAL_GPIO_WritePin(GPIOA, ledPin[num], GPIO_PIN_SET);
+    }
+
+    void setTime(int hour, int minute, int second) {
+    	setNumberOnClock(hour);
+    	setNumberOnClock(minute/5);
+    	setNumberOnClock(second/5);
+    }
 
   /* USER CODE END 2 */
 
@@ -93,7 +124,12 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  // This is main exercise
+	  // This is exercise 10
+
+	  clearAllClock();
+	  setTime(7, 5, 20);
+	  HAL_Delay(1000);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
